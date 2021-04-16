@@ -51,6 +51,7 @@ class MyCustomFormState extends State<MyCustomForm> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: RaisedButton(
               onPressed: () {
+                Navigator.pop(context);
               },
               child: Text('Submit'),
             ),
