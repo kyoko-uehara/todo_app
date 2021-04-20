@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:todo_app/main.dart';
 import 'package:todo_app/todo_edit.dart';
 
 
@@ -71,7 +72,11 @@ class MyAppState extends State<TodoList> {
               icon: Icon(Icons.add_circle_outlined)),
         ],
         onTap: (int value){
-          if(value == 0) Navigator.pop(context);
+          if(value == 0)
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyApp()),
+            );
           if(value == 1)
             Navigator.push(
               context,

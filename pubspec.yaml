@@ -15,6 +15,7 @@ dependencies:
   sqflite:
   path:
   path_provider:
+  shared_preferences:
 
 
   cupertino_icons: ^1.0.0
