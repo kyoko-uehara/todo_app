@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'You have pushed the button this many times:',
+                '今日はなにをしようかな？',
               ),
               RaisedButton(
                 child: Text('TODO LIST'),
