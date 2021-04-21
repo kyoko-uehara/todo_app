@@ -25,27 +25,44 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('TODO'),
         ),
-        body: Center(
-          child: Column(
-
-            mainAxisAlignment: MainAxisAlignment.center,
+        body: Container(
+          child: Stack(
             children: <Widget>[
-              Text(
-                '今日はなにをしようかな？',
+              Container(
+                  width: 300,
+                  height: 500,
+                  color:Colors.green
               ),
-              RaisedButton(
-                child: Text('TODO LIST'),
-                onPressed: (){
-                   Navigator.push(
-                       context,
-                       MaterialPageRoute(builder: (context) => TodoList()),
-                   );
-                },
+              Container(
+                width: 200,
+                height: 450,
+                color: Colors.orange,
               ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      '今日はなにをしようかな？',
+                    ),
+                    RaisedButton(
+                      child: Text('TODO LIST'),
+                      onPressed: (){
+                         Navigator.push(
+                             context,
+                             MaterialPageRoute(builder: (context) => TodoList()),
+                         );
+                      },
+                    ),
 
+                  ],
+                ),
+              ),
             ],
           ),
+
         ),
+
         floatingActionButton: FloatingActionButton(
           onPressed: (){
             Navigator.push(
@@ -59,6 +76,10 @@ class MyApp extends StatelessWidget {
 
     );
   }
+
+  var _stackData = <Widget>[
+
+  ];
 
 }
 

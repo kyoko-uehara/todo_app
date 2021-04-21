@@ -13,45 +13,7 @@ class TodoEdit extends StatelessWidget{
         title: Text('TODO'),
       ),
       body: MyCustomForm(),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 2,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            // ignore: deprecated_member_use
-            title: Text('home'),
-
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            // ignore: deprecated_member_use
-            title: Text('List'),
-
-          ),
-          BottomNavigationBarItem(
-            // ignore: deprecated_member_use
-              title: Text('Save'),
-              icon: Icon(Icons.save)),
-        ],
-        onTap: (int value){
-          if(value == 0)
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MyApp()),
-            );
-          if(value == 1)
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => TodoList()),
-            );
-          if(value == 2)
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => TodoEdit()),
-            );
-        },
-
-      ),
+      bottomNavigationBar: MyCustomBottom(),
     );
   }
 }
@@ -143,5 +105,59 @@ class MyCustomFormState extends State<MyCustomForm> {
       print ("insest : $id");
 
     });
+  }
+}
+// Create a Form widget.
+class MyCustomBottom extends StatefulWidget {
+  @override
+  MyCustomBottomState createState() {
+    return MyCustomBottomState();
+  }
+}
+
+
+class MyCustomBottomState extends State<MyCustomBottom> {
+  @override
+  Widget build(BuildContext context) {
+    // Build a Form widget using the _formKey created above.
+    return BottomNavigationBar(
+      currentIndex: 2,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          // ignore: deprecated_member_use
+          title: Text('home'),
+
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.list),
+          // ignore: deprecated_member_use
+          title: Text('List'),
+
+        ),
+        BottomNavigationBarItem(
+          // ignore: deprecated_member_use
+            title: Text('Save'),
+            icon: Icon(Icons.save)),
+      ],
+      onTap: (int value){
+        if(value == 0)
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MyApp()),
+          );
+        if(value == 1)
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TodoList()),
+          );
+        if(value == 2)
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TodoEdit()),
+          );
+      },
+
+    );
   }
 }
