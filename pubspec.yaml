@@ -16,6 +16,7 @@ dependencies:
   path:
   path_provider:
   shared_preferences:
+  intl:
 
 
   cupertino_icons: ^1.0.0

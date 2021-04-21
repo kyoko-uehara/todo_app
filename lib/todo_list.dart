@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:todo_app/main.dart';
 import 'package:todo_app/todo_edit.dart';
 
@@ -9,18 +11,17 @@ class TodoList extends StatefulWidget {
   TodoList({Key key}) : super(key: key);
 
   @override
-  MyAppState createState() {
-    return MyAppState();
-  }
+  _TodoList createState() => new _TodoList();
 }
 
-class MyAppState extends State<TodoList> {
-  final items = List<String>.generate(20, (i) => "Item ${i + 1}");
+class _TodoList extends State<TodoList> {
+  List<Widget> _items = <Widget>[];
 
-  // ignore: non_constant_identifier_names
-  var ScaffoldMessenger;
-
-
+  @override
+  void initState(){
+    super.initState();
+    getItems();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,34 +29,10 @@ class MyAppState extends State<TodoList> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Text('TODO'),
         ),
-        body: ListView.builder(
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            final item = items[index];
-
-            return Dismissible(
-              // Each Dismissible must contain a Key. Keys allow Flutter to
-              // uniquely identify widgets.
-              key: Key(item),
-              // Provide a function that tells the app
-              // what to do after an item has been swiped away.
-              onDismissed: (direction) {
-                // Remove the item from the data source.
-                setState(() {
-                  items.removeAt(index);
-                });
-
-                // Then show a snackbar.
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text("$item dismissed")));
-              },
-              // Show a red background as the item is swiped away.
-              background: Container(color: Colors.red),
-              child: ListTile(title: Text('$item')),
-            );
-          },
+        body: ListView(
+          children: _items,
         ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 1,
@@ -84,7 +61,36 @@ class MyAppState extends State<TodoList> {
             );
           },
 
-      ),
+        ),
       );
+
+    }
+    void getItems() async{
+      List<Widget> list = <Widget>[];
+      String dbPath = await getDatabasesPath();
+      String path = join(dbPath,"mydata.db");
+
+      Database database = await openDatabase(
+          path,
+          version: 1,
+          onCreate: (Database db, int version) async {
+            await db.execute(
+                "CREATE TABLE IF NOT EXISTS mydata (id INTEGER PRIMARY KEY, name TEXT, mail TEXT, tel TEXT)");
+          }
+      );
+
+      List<Map> result = await database.rawQuery('SELECT * FROM mydata');
+      for (Map item in result){
+        list.add(
+          ListTile(
+            title: Text(item['name']),
+            subtitle: Text(item['mail'] + ' ' + item['tel']),
+          )
+        );
+      }
+
+      setState(() {
+        _items = list;
+      });
   }
 }
