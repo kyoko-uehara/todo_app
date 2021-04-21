@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:todo_app/main.dart';
+import 'package:todo_app/todo_edit.dart';
 
 
 class TodoList extends StatefulWidget {
@@ -15,7 +17,10 @@ class TodoList extends StatefulWidget {
 class MyAppState extends State<TodoList> {
   final items = List<String>.generate(20, (i) => "Item ${i + 1}");
 
+  // ignore: non_constant_identifier_names
   var ScaffoldMessenger;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +57,34 @@ class MyAppState extends State<TodoList> {
             );
           },
         ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 1,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              // ignore: deprecated_member_use
+              title: Text('Home'),
+
+          ),
+          BottomNavigationBarItem(
+              // ignore: deprecated_member_use
+              title: Text('Add'),
+              icon: Icon(Icons.add_circle_outlined)),
+        ],
+        onTap: (int value){
+          if(value == 0)
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyApp()),
+            );
+          if(value == 1)
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TodoEdit()),
+            );
+          },
+
+      ),
       );
   }
 }
