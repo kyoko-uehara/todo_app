@@ -36,6 +36,37 @@ class _MyCustomFormState extends State<_MyCustomForm> {
   final _controllerB = TextEditingController();
   final _controllerC = TextEditingController();
 
+  String _data1;
+  String _data2;
+  String _data3;
+
+  void initState(){
+    _data1 = '今日はなにしよう？';
+    _data2 = (DateFormat.yMMMd()).format(new DateTime.now());
+    _data3 = 'おそれずにやってみよう！';
+
+    _controllerA.text = _data1;
+    _controllerB.text = _data2;
+    _controllerC.text = _data3;
+
+    super.initState();
+  }
+
+  void textChanged(String val){
+    print('textChanged A : ' + _controllerA.text);
+    print('textChanged B : ' + _controllerB.text);
+    print('textChanged C : ' + _controllerC.text);
+    setState(() {
+      _data1 = _controllerA.text;
+      _data2 = _controllerB.text;
+      _data3 = _controllerC.text;
+
+      print('data1' + _data1);
+      print('data2' + _data2);
+      print('data3' + _data3);
+    });
+  }
+
   final TextStyle styleTitle = TextStyle(
       fontSize: 28.0,
       color: Colors.black87
@@ -47,7 +78,8 @@ class _MyCustomFormState extends State<_MyCustomForm> {
 
   final TextStyle styleDate = TextStyle(
       fontSize: 26.0,
-      color: Colors.black87
+      color: Colors.black87,
+      //todo 中央に表示する
   );
 
   String _labelText = 'Select Date';
@@ -63,52 +95,11 @@ class _MyCustomFormState extends State<_MyCustomForm> {
     );
     if(picked != null) setState(() {
       this._labelText = (DateFormat.yMMMd()).format(picked);
-      //this._controllerB = this._labelText;
-
+      this._controllerB.text = this._labelText;
     }
     );
   }
-
-  @override
-  Widget build(BuildContext context) {
-    // Build a Form widget using the _formKey created above.
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Text('やること',style: styleTitle,),
-        TextField(
-          controller: _controllerA,
-          style: styleInput,
-        ),
-        Text('完了する日',style: styleTitle,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget> [
-            Text("$_labelText", style: styleDate,),
-
-            IconButton(
-              icon: Icon(Icons.date_range),
-              onPressed: () => _selectDate(context),
-            ),
-          ],
-        ),
-
-        TextField(
-          controller: _controllerB,
-          style: styleInput,
-        ),
-        Text('メモ',style: styleTitle,),
-        TextField(
-          controller: _controllerC,
-          style: styleInput,
-        ),
-
-      ],
-    );
-
-  }
-
-   void saveData() async {
+  void saveData() async {
     String dbPath = await getDatabasesPath();
     String path = join(dbPath,"mydata.db");
 
@@ -116,13 +107,14 @@ class _MyCustomFormState extends State<_MyCustomForm> {
     String data2 = _controllerB.text;
     String data3 = _controllerC.text;
 
-    data1 = "Flutter";
-    data2 = "Apr 30,2021";
-    data3 = "今月中頑張る！";
+    print('data1' + data1);
+    print('data2' + data2);
+    print('data3' + data3);
 
 
-    //String query = "INSERT INTO mydata(name, mail, tel) VALUES ('uehara','uehara@gmail.com','08012345678')";
-    String query = "INSERT INTO mydata(name, mail, tel) VALUES ('$data1','$data2','$data3')";
+
+    String query = "INSERT INTO mydata(name, mail, tel) VALUES ('uehara','uehara@gmail.com','08012345678')";
+    //String query = "INSERT INTO mydata(name, mail, tel) VALUES ('$data1','$data2','$data3')";
 
     Database database = await openDatabase(
         path,
@@ -140,17 +132,53 @@ class _MyCustomFormState extends State<_MyCustomForm> {
 
     });
   }
+
+  @override
+  Widget build(BuildContext context) {
+    // Build a Form widget using the _formKey created above.
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Text('やること',style: styleTitle,),
+        Center(
+          child: TextField(
+            onChanged: textChanged,
+            controller: _controllerA,
+            style: styleInput,
+          ),
+        ),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget> [
+            Text('完了する日',style: styleTitle,),
+            IconButton(
+              icon: Icon(Icons.date_range),
+              onPressed: () => _selectDate(context),
+            ),
+          ],
+        ),
+        TextField(
+          onChanged: textChanged,
+          controller: _controllerB,
+          style: styleInput,
+        ),
+        Text('メモ',style: styleTitle,),
+        TextField(
+          onChanged: textChanged,
+          controller: _controllerC,
+          style: styleInput,
+        ),
+
+      ],
+    );
+
+  }
+
+
 }
 // Create a Form widget.
-class MyCustomBottom extends StatefulWidget {
-  @override
-  MyCustomBottomState createState() {
-    return MyCustomBottomState();
-  }
-}
-
-
-class MyCustomBottomState extends State<MyCustomBottom> {
+class MyCustomBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
