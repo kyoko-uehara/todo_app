@@ -17,6 +17,7 @@ dependencies:
   path_provider:
   shared_preferences:
   intl:
+  moor_flutter:
 
 
   cupertino_icons: ^1.0.0
