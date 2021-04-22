@@ -41,13 +41,13 @@ class _MyCustomFormState extends State<_MyCustomForm> {
   String _data3;
 
   void initState(){
-    _data1 = '今日はなにしよう？';
+    _data1 = 'なにしよう？';
     _data2 = (DateFormat.yMMMd()).format(new DateTime.now());
     _data3 = 'おそれずにやってみよう！';
 
-    _controllerA.text = _data1;
+    //_controllerA.text = _data1;
     _controllerB.text = _data2;
-    _controllerC.text = _data3;
+    //_controllerC.text = _data3;
 
     super.initState();
   }
@@ -111,9 +111,7 @@ class _MyCustomFormState extends State<_MyCustomForm> {
     print('data2' + data2);
     print('data3' + data3);
 
-
-
-    String query = "INSERT INTO mydata(name, mail, tel) VALUES ('uehara','uehara@gmail.com','08012345678')";
+    String query = "INSERT INTO mydata(name, mail, tel) VALUES ('洗濯 ＆ 布団を干す','Apr 22, 2021','天気が良ければ！')";
     //String query = "INSERT INTO mydata(name, mail, tel) VALUES ('$data1','$data2','$data3')";
 
     Database database = await openDatabase(
@@ -136,41 +134,52 @@ class _MyCustomFormState extends State<_MyCustomForm> {
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Text('やること',style: styleTitle,),
-        Center(
-          child: TextField(
+    return Container(
+      padding: const EdgeInsets.fromLTRB(30.0, 1.0, 30.0, 1.0),
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Text('やること',style: styleTitle,),
+          TextField(
+            decoration: InputDecoration(hintText: _data1),
             onChanged: textChanged,
             controller: _controllerA,
             style: styleInput,
           ),
-        ),
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget> [
-            Text('完了する日',style: styleTitle,),
-            IconButton(
-              icon: Icon(Icons.date_range),
-              onPressed: () => _selectDate(context),
-            ),
-          ],
-        ),
-        TextField(
-          onChanged: textChanged,
-          controller: _controllerB,
-          style: styleInput,
-        ),
-        Text('メモ',style: styleTitle,),
-        TextField(
-          onChanged: textChanged,
-          controller: _controllerC,
-          style: styleInput,
-        ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget> [
+              Text('完了する日',style: styleTitle,),
+              Column(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.date_range),
+                    onPressed: () => _selectDate(context),
+                  ),
+                  Text("Select Date"),
+                ],
+              ),
+            ],
+          ),
+          TextField(
+            onChanged: textChanged,
+            controller: _controllerB,
+            style: styleInput,
+          ),
+          Text('メモ',style: styleTitle,),
+          TextField(
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            decoration: InputDecoration(hintText: _data3),
+            onChanged: textChanged,
+            controller: _controllerC,
+            style: styleInput,
+          ),
 
-      ],
+        ],
+      ),
     );
 
   }
